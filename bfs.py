@@ -17,21 +17,21 @@ class Stack(deque):
         return self.pop()
 
 
-def search(structure, root, children_of):
+def search(structure, root):
     while True:
         yield root
-        structure.enqueue(children_of(root))
+        structure.enqueue(root.children)
         if len(structure) == 0:
             break
         root = structure.dequeue()
 
 
-def bfs(tree, children_of):
-    return search(Queue(), tree, children_of)
+def bfs(tree):
+    return search(Queue(), tree)
 
 
-def dfs(tree, children_of):
-    return search(Stack(), tree, children_of)
+def dfs(tree):
+    return search(Stack(), tree)
 
 
 if __name__ == "__main__":
@@ -49,17 +49,5 @@ if __name__ == "__main__":
         Node(1, Node(3), Node(4, Node(6), Node(7), Node(8))),
         Node(2, Node(5)),
     )
-    print([i.value for i in bfs(tree, lambda node: node.children)])
-    print([i.value for i in dfs(tree, lambda node: node.children)])
-
-    # nodes can be in any format. these nodes are 2-tuples of
-    # the value and a list of its children.
-    tree = (
-        0,
-        [
-            (1, [(3, []), (4, [(6, []), (7, []), (8, [])])]),
-            (2, [(5, [])])
-        ]
-    )
-    print([i[0] for i in bfs(tree, lambda node: node[1])])
-    print([i[0] for i in dfs(tree, lambda node: node[1])])
+    print([i.value for i in bfs(tree)])
+    print([i.value for i in dfs(tree)])
